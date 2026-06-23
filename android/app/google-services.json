@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "1002371544023",
+    "project_id": "tourmanagementapp-ee34f",
+    "storage_bucket": "tourmanagementapp-ee34f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1002371544023:android:10c31b2300dc4173775192",
+        "android_client_info": {
+          "package_name": "com.example.razak_travel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1002371544023-6jrij8l8bhhi1fkc72rl55mki52cs0dn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKnsWeWcw3a3Nr6fu9VYTujqsAquxWN6A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1002371544023-6jrij8l8bhhi1fkc72rl55mki52cs0dn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1002371544023-ujlsgl8216d9rdjarcq0lamsfrp6bkha.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.tour2"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1002371544023:android:769161d4be8bff7f775192",
+        "android_client_info": {
+          "package_name": "com.example.tour2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1002371544023-6jrij8l8bhhi1fkc72rl55mki52cs0dn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKnsWeWcw3a3Nr6fu9VYTujqsAquxWN6A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1002371544023-6jrij8l8bhhi1fkc72rl55mki52cs0dn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1002371544023-ujlsgl8216d9rdjarcq0lamsfrp6bkha.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.tour2"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
