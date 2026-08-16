@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:razak_travel/features/admin/admin_dashboard.dart';
 import 'package:razak_travel/features/auth/auth_controller.dart';
 import 'package:razak_travel/routes/app_routes.dart';
 
@@ -25,12 +24,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
     final authController = context.read<AuthController>();
 
     if (authController.login(password)) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute<void>(
-          builder: (_) => const AdminDashboardScreen(),
-          settings: const RouteSettings(name: AppRoutes.adminPanel),
-        ),
-      );
+      Navigator.of(context).pushReplacementNamed(AppRoutes.categoryManagement);
     } else {
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
