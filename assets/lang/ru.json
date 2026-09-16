@@ -235,5 +235,14 @@
   "return_date_after_departure": "Return date must be on or after the departure date.",
   "sold_out": "Sold Out",
   "tour_requires_departures": "Add at least one departure.",
-  "additional_info": "Additional info"
+  "additional_info": "Additional info",
+  "change_password": "Сменить пароль",
+  "current_password": "Текущий пароль",
+  "new_password": "Новый пароль",
+  "confirm_password": "Подтвердите пароль",
+  "password_changed": "Пароль успешно изменён.",
+  "wrong_current_password": "Текущий пароль неверен.",
+  "invalid_password": "Неверный пароль",
+  "password_min_length": "Пароль должен содержать минимум 4 символа.",
+  "passwords_do_not_match": "Пароли не совпадают."
 }

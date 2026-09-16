@@ -23,12 +23,11 @@ class CategoryRepository {
             ascending: false,
           )
           .timeout(_timeout);
-      final categories = data
-          .map((json) => CategoryModel.fromJson(json))
-          .toList()
-        ..sort(
-          (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
-        );
+      final categories =
+          data.map((json) => CategoryModel.fromJson(json)).toList()
+            ..sort(
+              (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
+            );
       debugPrint(
         'CategoryRepository.getCategories: fetched ${categories.length} categories',
       );
@@ -54,10 +53,9 @@ class CategoryRepository {
     debugPrint('CATEGORY INSERT PAYLOAD: $payload');
     try {
       await _adminAccessService.ensureAdminOrOwnerAccess();
-      debugPrint('CategoryRepository.addCategory: admin access OK, inserting...');
-      await _supabase
-          .insert(_supabase.categories, payload)
-          .timeout(_timeout);
+      debugPrint(
+          'CategoryRepository.addCategory: admin access OK, inserting...');
+      await _supabase.insert(_supabase.categories, payload).timeout(_timeout);
       debugPrint('CategoryRepository.addCategory: insert OK');
     } on PostgrestException catch (e) {
       debugPrint(
@@ -80,7 +78,8 @@ class CategoryRepository {
     debugPrint('CategoryRepository.updateCategory: payload=$json');
     try {
       await _adminAccessService.ensureAdminOrOwnerAccess();
-      debugPrint('CategoryRepository.updateCategory: admin access OK, updating...');
+      debugPrint(
+          'CategoryRepository.updateCategory: admin access OK, updating...');
       await _supabase
           .update(
             _supabase.categories,

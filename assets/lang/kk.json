@@ -235,5 +235,14 @@
   "tour_requires_departures": "Add at least one departure.",
   "transfer_details": "Transfer details",
   "what_to_bring": "What to bring",
-  "additional_info": "Additional info"
+  "additional_info": "Additional info",
+  "change_password": "Құпиясөзді өзгерту",
+  "current_password": "Ағымдағы құпиясөз",
+  "new_password": "Жаңа құпиясөз",
+  "confirm_password": "Құпиясөзді растау",
+  "password_changed": "Құпиясөз сәтті өзгертілді.",
+  "wrong_current_password": "Ағымдағы құпиясөз қате.",
+  "invalid_password": "Қате құпиясөз",
+  "password_min_length": "Құпиясөз кемінде 4 таңбадан тұруы керек.",
+  "passwords_do_not_match": "Құпиясөздер сәйкес келмейді."
 }

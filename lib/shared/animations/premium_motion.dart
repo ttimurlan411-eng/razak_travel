@@ -127,7 +127,8 @@ class PremiumReveal extends StatelessWidget {
       builder: (context, value, _) {
         final delayedValue = delay == Duration.zero
             ? value
-            : ((value * (duration + delay).inMilliseconds) - delay.inMilliseconds) /
+            : ((value * (duration + delay).inMilliseconds) -
+                    delay.inMilliseconds) /
                 duration.inMilliseconds;
         final t = delayedValue.clamp(0.0, 1.0);
         return Opacity(
@@ -319,7 +320,8 @@ class AnimatedGradientSurface extends StatefulWidget {
   final double opacity;
 
   @override
-  State<AnimatedGradientSurface> createState() => _AnimatedGradientSurfaceState();
+  State<AnimatedGradientSurface> createState() =>
+      _AnimatedGradientSurfaceState();
 }
 
 class _AnimatedGradientSurfaceState extends State<AnimatedGradientSurface>

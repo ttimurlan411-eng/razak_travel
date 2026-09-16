@@ -235,5 +235,14 @@
   "return_date_after_departure": "Return date must be on or after the departure date.",
   "sold_out": "Sold Out",
   "tour_requires_departures": "Add at least one departure.",
-  "additional_info": "Additional info"
+  "additional_info": "Additional info",
+  "change_password": "Сырсөздү өзгөртүү",
+  "current_password": "Учурдагы сырсөз",
+  "new_password": "Жаңы сырсөз",
+  "confirm_password": "Сырсөздү ырастоо",
+  "password_changed": "Сырсөз ийгиликтүү өзгөртүлдү.",
+  "wrong_current_password": "Учурдагы сырсөз туура эмес.",
+  "invalid_password": "Туура эмес сырсөз",
+  "password_min_length": "Сырсөз кеминде 4 белгиден туруш керек.",
+  "passwords_do_not_match": "Сырсөздөр дал келбейт."
 }

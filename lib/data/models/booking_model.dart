@@ -127,36 +127,51 @@ class BookingModel {
 
     return BookingModel(
       id: _readString(json, 'id'),
-      userId: _readString(json, 'user_id', fallback: _readString(json, 'userId')),
+      userId:
+          _readString(json, 'user_id', fallback: _readString(json, 'userId')),
       userName: _readString(
         json,
         'user_name',
-        fallback: _readString(json, 'userName', fallback: _readString(json, 'customer_name', fallback: 'Unknown')),
+        fallback: _readString(json, 'userName',
+            fallback: _readString(json, 'customer_name', fallback: 'Unknown')),
       ),
       phone: _readString(json, 'phone'),
-      tourId: _readString(json, 'tour_id', fallback: _readString(json, 'tourId')),
-      tourName: _readString(json, 'tour_name', fallback: _readString(json, 'tourName')),
-      categoryId: _readString(json, 'category_id', fallback: _readString(json, 'categoryId')),
-      categoryName: _readString(json, 'category_name', fallback: _readString(json, 'categoryName')),
+      tourId:
+          _readString(json, 'tour_id', fallback: _readString(json, 'tourId')),
+      tourName: _readString(json, 'tour_name',
+          fallback: _readString(json, 'tourName')),
+      categoryId: _readString(json, 'category_id',
+          fallback: _readString(json, 'categoryId')),
+      categoryName: _readString(json, 'category_name',
+          fallback: _readString(json, 'categoryName')),
       price: parseDouble(json['price'], fallback: 0),
       status: normalizedStatus,
       createdAt: _parseCreatedAt(
         json['created_at'] ?? json['createdAt'],
       ),
-      departureId: _readString(json, 'departure_id', fallback: _readString(json, 'departureId')),
+      departureId: _readString(json, 'departure_id',
+          fallback: _readString(json, 'departureId')),
       departureDate: parseNullableDateTime(
-        json['departure_date'] ?? json['departureDate'] ?? json['tour_date'] ?? json['tourDate'],
+        json['departure_date'] ??
+            json['departureDate'] ??
+            json['tour_date'] ??
+            json['tourDate'],
       ),
       tourDate: parseNullableDateTime(json['tour_date'] ?? json['tourDate']),
       seatCount: parseInt(
         json['seats'] ?? json['seat_count'] ?? json['seatCount'],
         fallback: 1,
       ),
-      pickupType: _readString(json, 'pickup_type', fallback: _readString(json, 'pickupType')),
-      hotelName: _readString(json, 'hotel_name', fallback: _readString(json, 'hotelName')),
-      userAddress: _readString(json, 'user_address', fallback: _readString(json, 'userAddress')),
-      roomNumber: _readString(json, 'room_number', fallback: _readString(json, 'roomNumber')),
-      pickupNotes: _readString(json, 'pickup_notes', fallback: _readString(json, 'pickupNotes')),
+      pickupType: _readString(json, 'pickup_type',
+          fallback: _readString(json, 'pickupType')),
+      hotelName: _readString(json, 'hotel_name',
+          fallback: _readString(json, 'hotelName')),
+      userAddress: _readString(json, 'user_address',
+          fallback: _readString(json, 'userAddress')),
+      roomNumber: _readString(json, 'room_number',
+          fallback: _readString(json, 'roomNumber')),
+      pickupNotes: _readString(json, 'pickup_notes',
+          fallback: _readString(json, 'pickupNotes')),
     );
   }
 

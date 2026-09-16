@@ -1,4 +1,3 @@
 class AdminAccessService {
-  Future<void> ensureAdminOrOwnerAccess() async {
-  }
+  Future<void> ensureAdminOrOwnerAccess() async {}
 }

@@ -1,8 +1,7 @@
 class SupabaseConfig {
   SupabaseConfig._();
 
-  static const String supabaseUrl =
-      'https://mofafnvimnrbonhzyzwr.supabase.co';
+  static const String supabaseUrl = 'https://mofafnvimnrbonhzyzwr.supabase.co';
   static const String anonKey =
       'sb_publishable_-xIM8PC6_8DqgY6jrbhjkg_Tys6nRZU';
 

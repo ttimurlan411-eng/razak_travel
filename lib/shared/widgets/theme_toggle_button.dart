@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:razak_travel/shared/localization/app_localizations.dart';
+import 'package:razak_travel/core/localization/app_localizations.dart';
 import 'package:razak_travel/shared/theme/theme_controller.dart';
 
 class ThemeToggleButton extends StatelessWidget {

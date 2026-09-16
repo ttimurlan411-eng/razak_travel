@@ -235,5 +235,14 @@
   "owner_full_access_notice": "The owner always keeps full access.",
   "user_banned_success": "{0} has been banned.",
   "user_unbanned_success": "{0} has been unbanned.",
-  "additional_info": "Additional info"
+  "additional_info": "Additional info",
+  "change_password": "Change password",
+  "current_password": "Current password",
+  "new_password": "New password",
+  "confirm_password": "Confirm password",
+  "password_changed": "Password changed successfully.",
+  "wrong_current_password": "Current password is incorrect.",
+  "invalid_password": "Invalid password",
+  "password_min_length": "Password must be at least 4 characters.",
+  "passwords_do_not_match": "Passwords do not match."
 }

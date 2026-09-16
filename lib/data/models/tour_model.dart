@@ -101,8 +101,7 @@ class TourModel {
       .take(3)
       .toList(growable: false);
 
-  Map<String, String> get resolvedTitle =>
-      title.isNotEmpty ? title : names;
+  Map<String, String> get resolvedTitle => title.isNotEmpty ? title : names;
   Map<String, String> get resolvedDescriptionMap {
     if (descriptionMap.isNotEmpty) {
       return descriptionMap;
@@ -121,7 +120,8 @@ class TourModel {
   }
 
   String localizedDescription(String localeCode) {
-    final localized = localizedTextForLocale(resolvedDescriptionMap, localeCode);
+    final localized =
+        localizedTextForLocale(resolvedDescriptionMap, localeCode);
     if (localized.trim().isNotEmpty) {
       return localized;
     }
@@ -407,15 +407,18 @@ class TourModel {
     final descriptionText = rawDescription is String
         ? rawDescription.trim()
         : json['descriptionText']?.toString().trim() ?? '';
-    final imageUrl = json['image_url']?.toString() ?? json['imageUrl']?.toString() ?? '';
+    final imageUrl =
+        json['image_url']?.toString() ?? json['imageUrl']?.toString() ?? '';
     final date = parseDateTime(json['date']);
     final totalSeats = parseInt(json['total_seats'] ?? json['totalSeats']);
     final bookedSeats = parseInt(json['booked_seats'] ?? json['bookedSeats']);
-    final reservedSeats = parseInt(json['reserved_seats'] ?? json['reservedSeats']);
+    final reservedSeats =
+        parseInt(json['reserved_seats'] ?? json['reservedSeats']);
     final availableSeats =
         math.max(totalSeats - bookedSeats - reservedSeats, 0);
 
-    final legacyIncludedItems = parseLocalizedStringListMap(json['includedItems']);
+    final legacyIncludedItems =
+        parseLocalizedStringListMap(json['includedItems']);
     final legacyPlacesToVisit =
         parseLocalizedStringListMap(json['placesToVisit']);
     final titleMap = parseLocalizedTextMap(
@@ -444,7 +447,9 @@ class TourModel {
               json['names'],
               legacyValue: json['name']?.toString(),
             ),
-      categoryId: json['category_id']?.toString() ?? json['categoryId']?.toString() ?? '',
+      categoryId: json['category_id']?.toString() ??
+          json['categoryId']?.toString() ??
+          '',
       destination: json['destination']?.toString() ?? '',
       description: localizedTextForLocale(descriptionMap, 'kg'),
       descriptionMap: descriptionMap,

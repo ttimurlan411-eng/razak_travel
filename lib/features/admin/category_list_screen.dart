@@ -3,8 +3,9 @@ import 'package:razak_travel/data/models/category_model.dart';
 import 'package:razak_travel/data/repositories/category_repository.dart';
 import 'package:razak_travel/features/admin/admin_tour_list_screen.dart';
 import 'package:razak_travel/features/admin/add_category_screen.dart';
+import 'package:razak_travel/features/admin/change_password_screen.dart';
 import 'package:razak_travel/features/admin/widgets/admin_access_guard.dart';
-import 'package:razak_travel/shared/localization/app_localizations.dart';
+import 'package:razak_travel/core/localization/app_localizations.dart';
 import 'package:razak_travel/shared/widgets/app_card.dart';
 import 'package:razak_travel/shared/widgets/app_empty_state.dart';
 import 'package:razak_travel/shared/widgets/app_loader.dart';
@@ -69,6 +70,18 @@ class _AdminCategoryListScreenState extends State<AdminCategoryListScreen> {
           title: Text(l10n.text('manage_categories')),
           actions: [
             IconButton(
+              tooltip: l10n.text('change_password'),
+              icon: const Icon(Icons.lock_reset_outlined),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const ChangePasswordScreen(),
+                  ),
+                );
+              },
+            ),
+            IconButton(
               icon: const Icon(Icons.refresh),
               onPressed: _loadCategories,
             ),
@@ -117,8 +130,7 @@ class _AdminCategoryListScreenState extends State<AdminCategoryListScreen> {
       itemBuilder: (context, index) {
         final category = _categories[index];
         final localizedName = category.localizedName(localeCode);
-        final localizedDescription =
-            category.localizedDescription(localeCode);
+        final localizedDescription = category.localizedDescription(localeCode);
         return AppCard(
           onTap: () {
             Navigator.push(
@@ -172,8 +184,7 @@ class _AdminCategoryListScreenState extends State<AdminCategoryListScreen> {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) =>
-                              AddCategoryScreen(category: category),
+                          builder: (_) => AddCategoryScreen(category: category),
                         ),
                       );
                       _loadCategories();

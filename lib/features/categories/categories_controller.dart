@@ -196,4 +196,3 @@ class CategorySearchResults {
   bool get hasQuery => TourModel.normalizeSearchText(query).isNotEmpty;
   bool get hasResults => categories.isNotEmpty || tours.isNotEmpty;
 }
-  

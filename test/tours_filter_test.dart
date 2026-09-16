@@ -137,7 +137,8 @@ void main() {
       expect(result.map((tour) => tour.id), ['tour-1', 'tour-2']);
     });
 
-    test('keeps existing search and category filters working with price range', () {
+    test('keeps existing search and category filters working with price range',
+        () {
       final result = filterToursByCriteria(
         tours: tours,
         categoryById: categoryById,
@@ -150,7 +151,8 @@ void main() {
       expect(result.map((tour) => tour.id), ['tour-2']);
     });
 
-    test('excludes tours outside the selected budget even if search matches', () {
+    test('excludes tours outside the selected budget even if search matches',
+        () {
       final result = filterToursByCriteria(
         tours: tours,
         categoryById: categoryById,

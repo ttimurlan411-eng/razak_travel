@@ -235,5 +235,14 @@
   "tour_requires_departures": "Add at least one departure.",
   "transfer_details": "Transfer details",
   "what_to_bring": "What to bring",
-  "additional_info": "Additional info"
+  "additional_info": "Additional info",
+  "change_password": "Şifreyi değiştir",
+  "current_password": "Mevcut şifre",
+  "new_password": "Yeni şifre",
+  "confirm_password": "Şifreyi onayla",
+  "password_changed": "Şifre başarıyla değiştirildi.",
+  "wrong_current_password": "Mevcut şifre hatalı.",
+  "invalid_password": "Geçersiz şifre",
+  "password_min_length": "Şifre en az 4 karakter olmalıdır.",
+  "passwords_do_not_match": "Şifreler eşleşmiyor."
 }

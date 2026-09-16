@@ -1,17 +1,18 @@
 import 'package:flutter/foundation.dart';
+import 'package:razak_travel/data/repositories/admin_repository.dart';
 
 class AuthController extends ChangeNotifier {
   bool _isAuthenticated = false;
 
   bool get isLoggedIn => _isAuthenticated;
 
-  bool login(String password) {
-    if (password == 'timur') {
+  Future<bool> login(String password) async {
+    final valid = await AdminRepository().verifyPassword(password);
+    if (valid) {
       _isAuthenticated = true;
       notifyListeners();
-      return true;
     }
-    return false;
+    return valid;
   }
 
   void logout() {

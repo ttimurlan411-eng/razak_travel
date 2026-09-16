@@ -6,7 +6,7 @@ import 'package:razak_travel/data/repositories/booking_repository.dart';
 import 'package:razak_travel/data/repositories/tour_repository.dart';
 import 'package:razak_travel/features/admin/add_tour_screen.dart';
 import 'package:razak_travel/features/admin/widgets/admin_access_guard.dart';
-import 'package:razak_travel/shared/localization/app_localizations.dart';
+import 'package:razak_travel/core/localization/app_localizations.dart';
 import 'package:razak_travel/shared/widgets/app_card.dart';
 import 'package:razak_travel/shared/widgets/app_empty_state.dart';
 import 'package:razak_travel/shared/widgets/app_loader.dart';
@@ -169,8 +169,7 @@ class _AdminTourListScreenState extends State<AdminTourListScreen> {
                             const SizedBox(height: 12),
                         itemBuilder: (context, index) {
                           final tour = filteredTours[index];
-                          final localizedName =
-                              tour.localizedName(localeCode);
+                          final localizedName = tour.localizedName(localeCode);
                           final localizedDescription =
                               tour.localizedDescription(localeCode);
 
@@ -214,8 +213,7 @@ class _AdminTourListScreenState extends State<AdminTourListScreen> {
                                               .trim()
                                               .isNotEmpty)
                                             _TourMetaPill(
-                                              icon:
-                                                  Icons.location_on_outlined,
+                                              icon: Icons.location_on_outlined,
                                               label: tour.destination,
                                             ),
                                           _TourMetaPill(
@@ -227,8 +225,7 @@ class _AdminTourListScreenState extends State<AdminTourListScreen> {
                                           ),
                                         ],
                                       ),
-                                      if (localizedDescription
-                                          .isNotEmpty) ...[
+                                      if (localizedDescription.isNotEmpty) ...[
                                         const SizedBox(height: 8),
                                         Text(
                                           localizedDescription,
@@ -260,28 +257,25 @@ class _AdminTourListScreenState extends State<AdminTourListScreen> {
                                         );
                                         _loadTours();
                                       },
-                                      icon: const Icon(
-                                          Icons.edit_outlined),
+                                      icon: const Icon(Icons.edit_outlined),
                                     ),
                                     IconButton(
-                                      onPressed: _deletingTourIds
-                                              .contains(tour.id)
-                                          ? null
-                                          : () => _deleteTour(tour.id),
+                                      onPressed:
+                                          _deletingTourIds.contains(tour.id)
+                                              ? null
+                                              : () => _deleteTour(tour.id),
                                       icon: _deletingTourIds.contains(tour.id)
                                           ? const SizedBox(
                                               width: 20,
                                               height: 20,
-                                              child:
-                                                  CircularProgressIndicator(
+                                              child: CircularProgressIndicator(
                                                 strokeWidth: 2,
                                               ),
                                             )
                                           : const Icon(Icons.delete_outline),
                                     ),
                                     const SizedBox(height: 4),
-                                    const Icon(
-                                        Icons.chevron_right_rounded),
+                                    const Icon(Icons.chevron_right_rounded),
                                   ],
                                 ),
                               ],
@@ -343,8 +337,7 @@ class AdminTourDetailsScreen extends StatefulWidget {
   final TourModel tour;
 
   @override
-  State<AdminTourDetailsScreen> createState() =>
-      _AdminTourDetailsScreenState();
+  State<AdminTourDetailsScreen> createState() => _AdminTourDetailsScreenState();
 }
 
 class _AdminTourDetailsScreenState extends State<AdminTourDetailsScreen> {
@@ -400,8 +393,7 @@ class _AdminTourDetailsScreenState extends State<AdminTourDetailsScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final localeCode = Localizations.localeOf(context).languageCode;
-    final categoryName =
-        widget.category.localizedName(localeCode).trim();
+    final categoryName = widget.category.localizedName(localeCode).trim();
 
     return Scaffold(
       appBar: AppBar(
@@ -441,8 +433,7 @@ class _AdminTourDetailsScreenState extends State<AdminTourDetailsScreen> {
                         ),
                       _TourMetaPill(
                         icon: Icons.attach_money_outlined,
-                        label:
-                            '\$${widget.tour.price.toStringAsFixed(2)}',
+                        label: '\$${widget.tour.price.toStringAsFixed(2)}',
                       ),
                     ],
                   ),
@@ -475,8 +466,7 @@ class _AdminTourDetailsScreenState extends State<AdminTourDetailsScreen> {
                     onApprove: booking.isPending
                         ? () async {
                             final bookingId = booking.id;
-                            setState(() =>
-                                _loadingBookingIds.add(bookingId));
+                            setState(() => _loadingBookingIds.add(bookingId));
                             try {
                               final updated = await _bookingRepository
                                   .approveBooking(bookingId);
@@ -491,8 +481,8 @@ class _AdminTourDetailsScreenState extends State<AdminTourDetailsScreen> {
                               });
                             } catch (error) {
                               if (!mounted) return;
-                              setState(() =>
-                                  _loadingBookingIds.remove(bookingId));
+                              setState(
+                                  () => _loadingBookingIds.remove(bookingId));
                               if (!context.mounted) return;
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
@@ -507,23 +497,20 @@ class _AdminTourDetailsScreenState extends State<AdminTourDetailsScreen> {
                     onDelete: booking.isPending
                         ? () async {
                             final bookingId = booking.id;
-                            setState(() =>
-                                _loadingBookingIds.add(bookingId));
+                            setState(() => _loadingBookingIds.add(bookingId));
                             try {
-                              await _bookingRepository
-                                  .deleteBooking(bookingId);
+                              await _bookingRepository.deleteBooking(bookingId);
                               if (!mounted) return;
                               setState(() {
-                                _bookings
-                                    .removeWhere((b) => b.id == bookingId);
+                                _bookings.removeWhere((b) => b.id == bookingId);
                                 _loadingBookingIds.remove(bookingId);
                               });
                             } catch (e, s) {
                               debugPrint('REVIEW ERROR: $e');
                               debugPrintStack(stackTrace: s);
                               if (!mounted) return;
-                              setState(() =>
-                                  _loadingBookingIds.remove(bookingId));
+                              setState(
+                                  () => _loadingBookingIds.remove(bookingId));
                               if (!context.mounted) return;
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
@@ -569,9 +556,8 @@ class _BookingCard extends StatelessWidget {
         ? '$categoryName → $tourName'
         : (tourName.isNotEmpty ? tourName : categoryName);
     final displayDate = (booking.tourDate ?? booking.departureDate);
-    final priceDisplay = booking.price > 0
-        ? '\$${booking.price.toStringAsFixed(2)}'
-        : '';
+    final priceDisplay =
+        booking.price > 0 ? '\$${booking.price.toStringAsFixed(2)}' : '';
     final dateFormat = MaterialLocalizations.of(context);
 
     return Card(
@@ -616,12 +602,12 @@ class _BookingCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: FilledButton(
-                      onPressed: onApprove == null ||
-                              loadingIds.contains(booking.id)
-                          ? null
-                          : () async {
-                              await onApprove!();
-                            },
+                      onPressed:
+                          onApprove == null || loadingIds.contains(booking.id)
+                              ? null
+                              : () async {
+                                  await onApprove!();
+                                },
                       child: loadingIds.contains(booking.id)
                           ? const SizedBox(
                               width: 18,
@@ -636,12 +622,12 @@ class _BookingCard extends StatelessWidget {
                   const SizedBox(width: 12),
                   Expanded(
                     child: OutlinedButton(
-                      onPressed: onDelete == null ||
-                              loadingIds.contains(booking.id)
-                          ? null
-                          : () async {
-                              await onDelete!();
-                            },
+                      onPressed:
+                          onDelete == null || loadingIds.contains(booking.id)
+                              ? null
+                              : () async {
+                                  await onDelete!();
+                                },
                       child: loadingIds.contains(booking.id)
                           ? const SizedBox(
                               width: 18,

@@ -127,15 +127,90 @@ CREATE TABLE IF NOT EXISTS users (
   "fcmToken" TEXT DEFAULT ''
 );
 
--- 7. ENABLE ROW LEVEL SECURITY
+-- 7. ADMINS TABLE (admin panel password login)
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+CREATE TABLE IF NOT EXISTS admins (
+  id TEXT PRIMARY KEY,
+  username TEXT UNIQUE NOT NULL DEFAULT 'admin',
+  password_hash TEXT NOT NULL DEFAULT '',
+  is_active BOOLEAN DEFAULT TRUE,
+  role TEXT DEFAULT 'owner',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Seed the initial owner admin (login: admin, password: timur)
+-- Change this password from the admin panel after first login.
+INSERT INTO admins (id, username, password_hash, is_active, role)
+VALUES (
+  'main',
+  'admin',
+  crypt('timur', gen_salt('bf', 10)),
+  TRUE,
+  'owner'
+)
+ON CONFLICT (id) DO NOTHING;
+
+-- Verify the admin password (single admin, row id='main')
+CREATE OR REPLACE FUNCTION verify_admin_password(password_in TEXT)
+RETURNS BOOLEAN
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+DECLARE
+  stored_hash TEXT;
+BEGIN
+  SELECT password_hash INTO stored_hash
+  FROM admins
+  WHERE id = 'main' AND is_active = TRUE;
+
+  RETURN stored_hash IS NOT NULL
+    AND stored_hash <> ''
+    AND crypt(password_in, stored_hash) = stored_hash;
+END;
+$$;
+
+-- Change the admin password (requires the current password)
+CREATE OR REPLACE FUNCTION change_admin_password(
+  current_password TEXT,
+  new_password TEXT
+)
+RETURNS BOOLEAN
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+BEGIN
+  IF verify_admin_password(current_password) THEN
+    IF new_password IS NULL OR LENGTH(new_password) < 4 THEN
+      RETURN FALSE;
+    END IF;
+
+    UPDATE admins
+    SET password_hash = crypt(new_password, gen_salt('bf', 10))
+    WHERE id = 'main';
+
+    RETURN FOUND;
+  END IF;
+
+  RETURN FALSE;
+END;
+$$;
+
+-- 8. ENABLE ROW LEVEL SECURITY
 ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE tours ENABLE ROW LEVEL SECURITY;
 ALTER TABLE departures ENABLE ROW LEVEL SECURITY;
 ALTER TABLE bookings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE admins ENABLE ROW LEVEL SECURITY;
 
--- 8. CREATE POLICIES FOR PUBLIC ACCESS (anon key)
+-- NOTE: admins table has RLS enabled with NO policies.
+-- Direct anon access is denied; it is only reachable through
+-- the SECURITY DEFINER functions above (verify_admin_password,
+-- change_admin_password).
+
+-- 9. CREATE POLICIES FOR PUBLIC ACCESS (anon key)
 -- For a travel admin panel, allow full access via the anon key
 -- In production, you'd want more restrictive policies
 

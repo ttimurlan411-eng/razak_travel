@@ -26,8 +26,7 @@ class BookingRepository {
       order: 'created_at',
       ascending: false,
     );
-    final bookings =
-        data.map((json) => BookingModel.fromJson(json)).toList();
+    final bookings = data.map((json) => BookingModel.fromJson(json)).toList();
     return _localizeBookings(bookings, localeCode);
   }
 
@@ -47,8 +46,7 @@ class BookingRepository {
       order: 'created_at',
       ascending: false,
     );
-    final bookings =
-        data.map((json) => BookingModel.fromJson(json)).toList();
+    final bookings = data.map((json) => BookingModel.fromJson(json)).toList();
     return _localizeBookings(bookings, localeCode);
   }
 
@@ -63,8 +61,7 @@ class BookingRepository {
       order: 'created_at',
       ascending: false,
     );
-    final bookings =
-        data.map((json) => BookingModel.fromJson(json)).toList();
+    final bookings = data.map((json) => BookingModel.fromJson(json)).toList();
     return _localizeBookings(bookings, localeCode);
   }
 
@@ -103,9 +100,8 @@ class BookingRepository {
       'id',
       tour.categoryId,
     );
-    final category = categoryData != null
-        ? CategoryModel.fromJson(categoryData)
-        : null;
+    final category =
+        categoryData != null ? CategoryModel.fromJson(categoryData) : null;
     final categoryName =
         category?.localizedName(localeCode).trim().isNotEmpty == true
             ? category!.localizedName(localeCode)
@@ -115,8 +111,7 @@ class BookingRepository {
     final normalizedSeatCount = seatCount <= 0 ? 1 : seatCount;
     final requiresTransferDetails =
         departure.pickupType == TourDeparturePickupType.doorToDoor;
-    final normalizedHotelName =
-        requiresTransferDetails ? hotelName.trim() : '';
+    final normalizedHotelName = requiresTransferDetails ? hotelName.trim() : '';
     final normalizedUserAddress =
         requiresTransferDetails ? userAddress.trim() : '';
     final normalizedRoomNumber =
@@ -194,7 +189,8 @@ class BookingRepository {
       }
     }
 
-    final createdBooking = await getBookingById(bookingId, localeCode: localeCode);
+    final createdBooking =
+        await getBookingById(bookingId, localeCode: localeCode);
 
     if (createdBooking == null) {
       throw 'error_generic';
@@ -364,14 +360,12 @@ class BookingRepository {
           tour?.localizedName(normalizedLocale).trim() ?? '';
       final localizedCategoryName =
           category?.localizedName(normalizedLocale).trim() ?? '';
-      final resolvedPrice = booking.price > 0
-          ? booking.price
-          : (tour?.price ?? booking.price);
+      final resolvedPrice =
+          booking.price > 0 ? booking.price : (tour?.price ?? booking.price);
 
       return booking.copyWith(
-        tourName: localizedTourName.isNotEmpty
-            ? localizedTourName
-            : booking.tourName,
+        tourName:
+            localizedTourName.isNotEmpty ? localizedTourName : booking.tourName,
         categoryName: localizedCategoryName.isNotEmpty
             ? localizedCategoryName
             : booking.categoryName,
@@ -381,15 +375,12 @@ class BookingRepository {
   }
 
   Future<Map<String, TourModel>> _loadToursById(Iterable<String> ids) async {
-    final uniqueIds = ids
-        .map((id) => id.trim())
-        .where((id) => id.isNotEmpty)
-        .toSet();
+    final uniqueIds =
+        ids.map((id) => id.trim()).where((id) => id.isNotEmpty).toSet();
     final result = <String, TourModel>{};
 
     for (final id in uniqueIds) {
-      final data =
-          await _supabase.querySingleEq(_supabase.tours, 'id', id);
+      final data = await _supabase.querySingleEq(_supabase.tours, 'id', id);
       if (data != null) {
         result[id] = TourModel.fromJson(data);
       }
@@ -401,10 +392,8 @@ class BookingRepository {
   Future<Map<String, CategoryModel>> _loadCategoriesById(
     Iterable<String> ids,
   ) async {
-    final uniqueIds = ids
-        .map((id) => id.trim())
-        .where((id) => id.isNotEmpty)
-        .toSet();
+    final uniqueIds =
+        ids.map((id) => id.trim()).where((id) => id.isNotEmpty).toSet();
     final result = <String, CategoryModel>{};
 
     for (final id in uniqueIds) {

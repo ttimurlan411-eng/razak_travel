@@ -6,8 +6,10 @@ TourModel buildTourFixture() {
     id: 'tour-1',
     names: const {
       'en': 'Alpine Escape',
-      'ru': '\u0410\u043b\u044c\u043f\u0438\u0439\u0441\u043a\u0438\u0439 \u043e\u0442\u0434\u044b\u0445',
-      'ky': '\u0422\u043e\u043e\u043b\u0443\u0443 \u044d\u0441 \u0430\u043b\u0443\u0443',
+      'ru':
+          '\u0410\u043b\u044c\u043f\u0438\u0439\u0441\u043a\u0438\u0439 \u043e\u0442\u0434\u044b\u0445',
+      'ky':
+          '\u0422\u043e\u043e\u043b\u0443\u0443 \u044d\u0441 \u0430\u043b\u0443\u0443',
     },
     categoryId: 'mountains',
     destination: 'Bishkek',

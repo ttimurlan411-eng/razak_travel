@@ -134,7 +134,8 @@ class SupabaseService {
     dynamic value,
   ) async {
     try {
-      debugPrint('SupabaseService.update: table=${table.toString()} column=$column value=$value');
+      debugPrint(
+          'SupabaseService.update: table=${table.toString()} column=$column value=$value');
       debugPrint('SupabaseService.update: payload=$values');
       final response = await table.update(values).eq(column, value).select();
       debugPrint('SupabaseService.update: response=$response');
@@ -153,7 +154,8 @@ class SupabaseService {
     dynamic value,
   ) async {
     try {
-      debugPrint('SupabaseService.delete: table=${table.toString()} column=$column value=$value');
+      debugPrint(
+          'SupabaseService.delete: table=${table.toString()} column=$column value=$value');
       await table.delete().eq(column, value);
       debugPrint('SupabaseService.delete: OK');
     } catch (e, s) {

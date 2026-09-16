@@ -10,7 +10,7 @@ import 'package:razak_travel/data/repositories/notification_repository.dart';
 import 'package:razak_travel/data/repositories/tour_repository.dart';
 import 'package:razak_travel/features/admin/widgets/admin_access_guard.dart';
 import 'package:razak_travel/features/tours/models/tour_departure.dart';
-import 'package:razak_travel/shared/localization/app_localizations.dart';
+import 'package:razak_travel/core/localization/app_localizations.dart';
 import 'package:razak_travel/shared/widgets/app_button.dart';
 import 'package:razak_travel/shared/widgets/app_empty_state.dart';
 import 'package:razak_travel/shared/widgets/app_loader.dart';
@@ -101,9 +101,7 @@ class _AddTourScreenState extends State<AddTourScreen>
         );
     for (final locale in _locales) {
       _nameControllers[locale] = TextEditingController(
-        text: widget.tour?.title[locale] ??
-            widget.tour?.names[locale] ??
-            '',
+        text: widget.tour?.title[locale] ?? widget.tour?.names[locale] ?? '',
       );
       _descriptionControllers[locale] = TextEditingController(
         text: widget.tour?.descriptionMap[locale] ??
@@ -276,7 +274,8 @@ class _AddTourScreenState extends State<AddTourScreen>
     });
   }
 
-  Future<void> _selectDateForController(TextEditingController controller) async {
+  Future<void> _selectDateForController(
+      TextEditingController controller) async {
     final initialDate = DateTime.tryParse(controller.text) ?? DateTime.now();
     final pickedDate = await showDatePicker(
       context: context,
@@ -395,469 +394,467 @@ class _AddTourScreenState extends State<AddTourScreen>
         ),
         body: SafeArea(
           child: FutureBuilder<List<CategoryModel>>(
-          future: _categoriesFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const AppLoader();
-            }
+            future: _categoriesFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const AppLoader();
+              }
 
-            if (snapshot.hasError) {
-              return AppEmptyState(
-                message: l10n.translate('error_generic'),
-                icon: Icons.error_outline,
-              );
-            }
+              if (snapshot.hasError) {
+                return AppEmptyState(
+                  message: l10n.translate('error_generic'),
+                  icon: Icons.error_outline,
+                );
+              }
 
-            final categories = snapshot.data ?? <CategoryModel>[];
+              final categories = snapshot.data ?? <CategoryModel>[];
 
-            if (categories.isNotEmpty &&
-                !categories.any(
-              (category) => category.id == _selectedCategoryId,
-            )) {
-              _selectedCategoryId = categories.first.id;
-            }
+              if (categories.isNotEmpty &&
+                  !categories.any(
+                    (category) => category.id == _selectedCategoryId,
+                  )) {
+                _selectedCategoryId = categories.first.id;
+              }
 
-            return Stack(
-              children: [
-                SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-                  child: Form(
-                    key: _formKey,
-                    autovalidateMode: AutovalidateMode.disabled,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (categories.isNotEmpty) ...[
-                          DropdownButtonFormField<String>(
-                            initialValue: _selectedCategoryId.isEmpty
-                                ? null
-                                : _selectedCategoryId,
-                            items: categories
-                                .map(
-                                  (category) => DropdownMenuItem<String>(
-                                    value: category.id,
-                                    child: Text(
-                                      category.localizedName(
-                                        Localizations.localeOf(context)
-                                            .languageCode,
+              return Stack(
+                children: [
+                  SingleChildScrollView(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+                    child: Form(
+                      key: _formKey,
+                      autovalidateMode: AutovalidateMode.disabled,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (categories.isNotEmpty) ...[
+                            DropdownButtonFormField<String>(
+                              initialValue: _selectedCategoryId.isEmpty
+                                  ? null
+                                  : _selectedCategoryId,
+                              items: categories
+                                  .map(
+                                    (category) => DropdownMenuItem<String>(
+                                      value: category.id,
+                                      child: Text(
+                                        category.localizedName(
+                                          Localizations.localeOf(context)
+                                              .languageCode,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedCategoryId = value ?? '';
-                              });
-                            },
+                                  )
+                                  .toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedCategoryId = value ?? '';
+                                });
+                              },
+                              decoration: InputDecoration(
+                                labelText: l10n.translate('category'),
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                          ],
+                          TextFormField(
+                            controller: _nameControllers['kg']!,
                             decoration: InputDecoration(
-                              labelText: l10n.translate('category'),
+                              labelText: l10n.translate('tour_title'),
                             ),
                           ),
                           const SizedBox(height: 12),
-                        ],
-                        TextFormField(
-                          controller: _nameControllers['kg']!,
-                          decoration: InputDecoration(
-                            labelText: l10n.translate('tour_title'),
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              l10n.translate('tour_image'),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleSmall
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                            ),
-                            const SizedBox(height: 8),
-                            TextFormField(
-                              controller: _imageUrlController,
-                              keyboardType: TextInputType.url,
-                              decoration: InputDecoration(
-                                labelText: l10n.translate('image_url'),
-                                hintText: l10n.translate('tour_image_url_hint'),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                l10n.translate('tour_image'),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                    ),
                               ),
-                            ),
-                            const SizedBox(height: 12),
-                            ElevatedButton.icon(
-                              onPressed:
-                                  isLoading || _isSaving || _isUploadingImages
-                                      ? null
-                                      : pickAndUploadImage,
-                              icon: _isUploadingImages
-                                  ? const SizedBox(
-                                      height: 18,
-                                      width: 18,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                      ),
-                                    )
-                                  : const Icon(Icons.upload_outlined),
-                              label: Text(l10n.translate('upload_image')),
-                            ),
-                            if (_isUploadingImages) ...[
-                              const SizedBox(height: 12),
-                              const LinearProgressIndicator(),
-                            ],
-                            if (_imageUrls.isNotEmpty) ...[
-                              const SizedBox(height: 10),
-                              _TourImagePreview(
-                                imageUrl: _primaryPreviewImageUrl,
+                              const SizedBox(height: 8),
+                              TextFormField(
+                                controller: _imageUrlController,
+                                keyboardType: TextInputType.url,
+                                decoration: InputDecoration(
+                                  labelText: l10n.translate('image_url'),
+                                  hintText:
+                                      l10n.translate('tour_image_url_hint'),
+                                ),
                               ),
                               const SizedBox(height: 12),
-                              OutlinedButton.icon(
+                              ElevatedButton.icon(
                                 onPressed:
                                     isLoading || _isSaving || _isUploadingImages
                                         ? null
-                                        : () {
-                                            setState(() {
-                                              _setImageUrls(
-                                                _imageUrls.skip(1).toList(),
-                                              );
-                                            });
-                                          },
-                                icon: const Icon(Icons.delete_sweep_outlined),
-                                label: Text(_clearPrimaryImageLabel(context)),
+                                        : pickAndUploadImage,
+                                icon: _isUploadingImages
+                                    ? const SizedBox(
+                                        height: 18,
+                                        width: 18,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                        ),
+                                      )
+                                    : const Icon(Icons.upload_outlined),
+                                label: Text(l10n.translate('upload_image')),
                               ),
-                            ],
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                        TextFormField(
-                          controller: _priceController,
-                          keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true,
-                          ),
-                          decoration: InputDecoration(
-                            labelText: l10n.translate('price'),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        ExpansionTile(
-                          tilePadding: EdgeInsets.zero,
-                          childrenPadding: const EdgeInsets.only(bottom: 4),
-                          initiallyExpanded: widget.tour != null,
-                          title: Text(
-                            l10n.translate('additional_info'),
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleSmall
-                                ?.copyWith(fontWeight: FontWeight.w700),
-                          ),
-                          children: [
-                            TextFormField(
-                              controller: _destinationController,
-                              decoration: InputDecoration(
-                                labelText: l10n.translate('destination'),
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            TextFormField(
-                              controller: _galleryImagesController,
-                              keyboardType: TextInputType.multiline,
-                              minLines: 3,
-                              maxLines: 5,
-                              decoration: InputDecoration(
-                                labelText:
-                                    l10n.translate('tour_gallery_images'),
-                                hintText: l10n.translate('image_urls_hint'),
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            _TourGalleryPreview(
-                              imageUrls: _imageUrls,
-                              onRemoveImage: (index) {
-                                setState(() {
-                                  final nextImages = List<String>.from(_imageUrls)
-                                    ..removeAt(index);
-                                  _setImageUrls(nextImages);
-                                });
-                              },
-                            ),
-                            const SizedBox(height: 12),
-                            Wrap(
-                              spacing: 12,
-                              runSpacing: 12,
-                              children: [
+                              if (_isUploadingImages) ...[
+                                const SizedBox(height: 12),
+                                const LinearProgressIndicator(),
+                              ],
+                              if (_imageUrls.isNotEmpty) ...[
+                                const SizedBox(height: 10),
+                                _TourImagePreview(
+                                  imageUrl: _primaryPreviewImageUrl,
+                                ),
+                                const SizedBox(height: 12),
                                 OutlinedButton.icon(
                                   onPressed: isLoading ||
                                           _isSaving ||
                                           _isUploadingImages
                                       ? null
-                                      : _uploadGalleryImages,
-                                  icon: _isUploadingImages
-                                      ? const SizedBox(
-                                          height: 18,
-                                          width: 18,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                          ),
-                                        )
-                                      : const Icon(
-                                          Icons.collections_outlined,
-                                        ),
-                                  label:
-                                      Text(l10n.translate('upload_images')),
+                                      : () {
+                                          setState(() {
+                                            _setImageUrls(
+                                              _imageUrls.skip(1).toList(),
+                                            );
+                                          });
+                                        },
+                                  icon: const Icon(Icons.delete_sweep_outlined),
+                                  label: Text(_clearPrimaryImageLabel(context)),
                                 ),
-                                if (_imageUrls.isNotEmpty)
+                              ],
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          TextFormField(
+                            controller: _priceController,
+                            keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true,
+                            ),
+                            decoration: InputDecoration(
+                              labelText: l10n.translate('price'),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          ExpansionTile(
+                            tilePadding: EdgeInsets.zero,
+                            childrenPadding: const EdgeInsets.only(bottom: 4),
+                            initiallyExpanded: widget.tour != null,
+                            title: Text(
+                              l10n.translate('additional_info'),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleSmall
+                                  ?.copyWith(fontWeight: FontWeight.w700),
+                            ),
+                            children: [
+                              TextFormField(
+                                controller: _destinationController,
+                                decoration: InputDecoration(
+                                  labelText: l10n.translate('destination'),
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              TextFormField(
+                                controller: _galleryImagesController,
+                                keyboardType: TextInputType.multiline,
+                                minLines: 3,
+                                maxLines: 5,
+                                decoration: InputDecoration(
+                                  labelText:
+                                      l10n.translate('tour_gallery_images'),
+                                  hintText: l10n.translate('image_urls_hint'),
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              _TourGalleryPreview(
+                                imageUrls: _imageUrls,
+                                onRemoveImage: (index) {
+                                  setState(() {
+                                    final nextImages =
+                                        List<String>.from(_imageUrls)
+                                          ..removeAt(index);
+                                    _setImageUrls(nextImages);
+                                  });
+                                },
+                              ),
+                              const SizedBox(height: 12),
+                              Wrap(
+                                spacing: 12,
+                                runSpacing: 12,
+                                children: [
                                   OutlinedButton.icon(
                                     onPressed: isLoading ||
                                             _isSaving ||
                                             _isUploadingImages
                                         ? null
-                                        : () {
-                                            setState(() {
-                                              _setImageUrls(const []);
-                                            });
-                                          },
-                                    icon: const Icon(
-                                      Icons.delete_sweep_outlined,
-                                    ),
+                                        : _uploadGalleryImages,
+                                    icon: _isUploadingImages
+                                        ? const SizedBox(
+                                            height: 18,
+                                            width: 18,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                            ),
+                                          )
+                                        : const Icon(
+                                            Icons.collections_outlined,
+                                          ),
                                     label:
-                                        Text(l10n.translate('clear_gallery')),
+                                        Text(l10n.translate('upload_images')),
                                   ),
-                              ],
-                            ),
-                            const SizedBox(height: 12),
-                            Text(
-                              l10n.translate('departure_dates'),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleSmall
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                            ),
-                            const SizedBox(height: 8),
-                            TextFormField(
-                              controller: _dateController,
-                              readOnly: true,
-                              onTap: () =>
-                                  _selectDateForController(_dateController),
-                              decoration: InputDecoration(
-                                labelText: l10n.translate('date'),
+                                  if (_imageUrls.isNotEmpty)
+                                    OutlinedButton.icon(
+                                      onPressed: isLoading ||
+                                              _isSaving ||
+                                              _isUploadingImages
+                                          ? null
+                                          : () {
+                                              setState(() {
+                                                _setImageUrls(const []);
+                                              });
+                                            },
+                                      icon: const Icon(
+                                        Icons.delete_sweep_outlined,
+                                      ),
+                                      label:
+                                          Text(l10n.translate('clear_gallery')),
+                                    ),
+                                ],
                               ),
-                            ),
-                            const SizedBox(height: 12),
-                            TextFormField(
-                              controller: _returnDateController,
-                              readOnly: true,
-                              onTap: () => _selectDateForController(
-                                _returnDateController,
+                              const SizedBox(height: 12),
+                              Text(
+                                l10n.translate('departure_dates'),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                    ),
                               ),
-                              decoration: InputDecoration(
-                                labelText: l10n.translate('return_date'),
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            TextFormField(
-                              controller: _totalSeatsController,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                labelText: l10n.translate('total_seats'),
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            _DeparturePickupFields(
-                              pickupType: _primaryPickupType,
-                              onPickupTypeChanged: (value) {
-                                setState(() {
-                                  _primaryPickupType = value;
-                                });
-                              },
-                              meetingPointController:
-                                  _meetingPointControllers[
-                                      _locales[_currentLocaleIndex]]!,
-                              meetingAddressController:
-                                  _meetingAddressControllers[
-                                      _locales[_currentLocaleIndex]]!,
-                              landmarkController:
-                                  _landmarkControllers[
-                                      _locales[_currentLocaleIndex]]!,
-                              pickupInstructionsController:
-                                  _pickupInstructionsControllers[
-                                      _locales[_currentLocaleIndex]]!,
-                              googleMapsUrlController:
-                                  _departureGoogleMapsUrlController,
-                              latitudeController:
-                                  _departureLatitudeController,
-                              longitudeController:
-                                  _departureLongitudeController,
-                              guidePhoneController:
-                                  _guidePhoneControllers[
-                                      _locales[_currentLocaleIndex]]!,
-                              guideWhatsappController:
-                                  _guideWhatsappControllers[
-                                      _locales[_currentLocaleIndex]]!,
-                            ),
-                            const SizedBox(height: 12),
-                            ..._additionalDepartureForms.map(
-                              (departureForm) => Padding(
-                                padding: const EdgeInsets.only(bottom: 12),
-                                child: _DepartureEditorCard(
-                                  title:
-                                      l10n.translate('additional_departure'),
-                                  departureForm: departureForm,
-                                  localeCode: _locales[_currentLocaleIndex],
-                                  onPickupTypeChanged: (value) {
-                                    setState(() {
-                                      departureForm.pickupType = value;
-                                    });
-                                  },
-                                  onSelectDepartureDate: () =>
-                                      _selectDateForController(
-                                    departureForm.departureDateController,
-                                  ),
-                                  onSelectReturnDate: () =>
-                                      _selectDateForController(
-                                    departureForm.returnDateController,
-                                  ),
-                                  onRemove: () {
-                                    setState(() {
-                                      departureForm.dispose();
-                                      _additionalDepartureForms.remove(
-                                        departureForm,
-                                      );
-                                    });
-                                  },
+                              const SizedBox(height: 8),
+                              TextFormField(
+                                controller: _dateController,
+                                readOnly: true,
+                                onTap: () =>
+                                    _selectDateForController(_dateController),
+                                decoration: InputDecoration(
+                                  labelText: l10n.translate('date'),
                                 ),
                               ),
-                            ),
-                            OutlinedButton.icon(
-                              onPressed: _isSaving || _isUploadingImages
-                                  ? null
-                                  : () {
+                              const SizedBox(height: 12),
+                              TextFormField(
+                                controller: _returnDateController,
+                                readOnly: true,
+                                onTap: () => _selectDateForController(
+                                  _returnDateController,
+                                ),
+                                decoration: InputDecoration(
+                                  labelText: l10n.translate('return_date'),
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              TextFormField(
+                                controller: _totalSeatsController,
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  labelText: l10n.translate('total_seats'),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              _DeparturePickupFields(
+                                pickupType: _primaryPickupType,
+                                onPickupTypeChanged: (value) {
+                                  setState(() {
+                                    _primaryPickupType = value;
+                                  });
+                                },
+                                meetingPointController:
+                                    _meetingPointControllers[
+                                        _locales[_currentLocaleIndex]]!,
+                                meetingAddressController:
+                                    _meetingAddressControllers[
+                                        _locales[_currentLocaleIndex]]!,
+                                landmarkController: _landmarkControllers[
+                                    _locales[_currentLocaleIndex]]!,
+                                pickupInstructionsController:
+                                    _pickupInstructionsControllers[
+                                        _locales[_currentLocaleIndex]]!,
+                                googleMapsUrlController:
+                                    _departureGoogleMapsUrlController,
+                                latitudeController:
+                                    _departureLatitudeController,
+                                longitudeController:
+                                    _departureLongitudeController,
+                                guidePhoneController: _guidePhoneControllers[
+                                    _locales[_currentLocaleIndex]]!,
+                                guideWhatsappController:
+                                    _guideWhatsappControllers[
+                                        _locales[_currentLocaleIndex]]!,
+                              ),
+                              const SizedBox(height: 12),
+                              ..._additionalDepartureForms.map(
+                                (departureForm) => Padding(
+                                  padding: const EdgeInsets.only(bottom: 12),
+                                  child: _DepartureEditorCard(
+                                    title:
+                                        l10n.translate('additional_departure'),
+                                    departureForm: departureForm,
+                                    localeCode: _locales[_currentLocaleIndex],
+                                    onPickupTypeChanged: (value) {
                                       setState(() {
-                                        _additionalDepartureForms.add(
-                                          _DepartureFormData.create(),
+                                        departureForm.pickupType = value;
+                                      });
+                                    },
+                                    onSelectDepartureDate: () =>
+                                        _selectDateForController(
+                                      departureForm.departureDateController,
+                                    ),
+                                    onSelectReturnDate: () =>
+                                        _selectDateForController(
+                                      departureForm.returnDateController,
+                                    ),
+                                    onRemove: () {
+                                      setState(() {
+                                        departureForm.dispose();
+                                        _additionalDepartureForms.remove(
+                                          departureForm,
                                         );
                                       });
                                     },
-                              icon: const Icon(Icons.add_outlined),
-                              label: Text(l10n.translate('add_departure')),
-                            ),
-                            const SizedBox(height: 12),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: TextFormField(
-                                    controller: _latitudeController,
-                                    keyboardType:
-                                        const TextInputType.numberWithOptions(
-                                      decimal: true,
-                                      signed: true,
-                                    ),
-                                    decoration: InputDecoration(
-                                      labelText: l10n.translate('latitude'),
-                                    ),
                                   ),
                                 ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: TextFormField(
-                                    controller: _longitudeController,
-                                    keyboardType:
-                                        const TextInputType.numberWithOptions(
-                                      decimal: true,
-                                      signed: true,
-                                    ),
-                                    decoration: InputDecoration(
-                                      labelText: l10n.translate('longitude'),
+                              ),
+                              OutlinedButton.icon(
+                                onPressed: _isSaving || _isUploadingImages
+                                    ? null
+                                    : () {
+                                        setState(() {
+                                          _additionalDepartureForms.add(
+                                            _DepartureFormData.create(),
+                                          );
+                                        });
+                                      },
+                                icon: const Icon(Icons.add_outlined),
+                                label: Text(l10n.translate('add_departure')),
+                              ),
+                              const SizedBox(height: 12),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: TextFormField(
+                                      controller: _latitudeController,
+                                      keyboardType:
+                                          const TextInputType.numberWithOptions(
+                                        decimal: true,
+                                        signed: true,
+                                      ),
+                                      decoration: InputDecoration(
+                                        labelText: l10n.translate('latitude'),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 16),
-                            OutlinedButton.icon(
-                              onPressed: () {
-                                setState(() {
-                                  _showTranslations = !_showTranslations;
-                                  if (!_showTranslations) {
-                                    _tabController.index = 0;
-                                    _currentLocaleIndex = 0;
-                                  }
-                                });
-                              },
-                              icon: Icon(
-                                _showTranslations
-                                    ? Icons.translate_outlined
-                                    : Icons.edit_note_outlined,
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: TextFormField(
+                                      controller: _longitudeController,
+                                      keyboardType:
+                                          const TextInputType.numberWithOptions(
+                                        decimal: true,
+                                        signed: true,
+                                      ),
+                                      decoration: InputDecoration(
+                                        labelText: l10n.translate('longitude'),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              label: Text(
-                                l10n.translate(
-                                  _showTranslations
-                                      ? 'hide_translations'
-                                      : 'edit_translations',
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            _LocalizedTourFields(
-                              localeCode: _locales[_currentLocaleIndex],
-                              showTitleField: _showTranslations,
-                              showExtendedFields: _showTranslations,
-                              nameController: _nameControllers[
-                                  _locales[_currentLocaleIndex]]!,
-                              descriptionController:
-                                  _descriptionControllers[
-                                      _locales[_currentLocaleIndex]]!,
-                              includedController: _includedControllers[
-                                  _locales[_currentLocaleIndex]]!,
-                              notIncludedController: _placesControllers[
-                                  _locales[_currentLocaleIndex]]!,
-                              whatToBringController:
-                                  _whatToBringControllers[
-                                      _locales[_currentLocaleIndex]]!,
-                              extraInfoController:
-                                  _extraInfoControllers[
-                                      _locales[_currentLocaleIndex]]!,
-                              departureTimeController:
-                                  _departureTimeControllers[
-                                      _locales[_currentLocaleIndex]]!,
-                              returnTimeController:
-                                  _returnTimeTextControllers[
-                                      _locales[_currentLocaleIndex]]!,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        AppButton(
-                          text: l10n.translate('save'),
-                          isLoading: _isSaving,
-                          onPressed: _isSaving || _isUploadingImages
-                              ? null
-                              : () async {
-                                  // ignore: avoid_print
-                                  print("SAVE PRESSED");
-                                  await _saveTour();
+                              const SizedBox(height: 16),
+                              OutlinedButton.icon(
+                                onPressed: () {
+                                  setState(() {
+                                    _showTranslations = !_showTranslations;
+                                    if (!_showTranslations) {
+                                      _tabController.index = 0;
+                                      _currentLocaleIndex = 0;
+                                    }
+                                  });
                                 },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                if (_isSaving ||
-                    isLoading ||
-                    _isUploadingImages ||
-                    _isLoadingDepartures)
-                  Positioned.fill(
-                    child: Container(
-                      color: const Color(0x4D000000),
-                      child: const Center(
-                        child: CircularProgressIndicator(),
+                                icon: Icon(
+                                  _showTranslations
+                                      ? Icons.translate_outlined
+                                      : Icons.edit_note_outlined,
+                                ),
+                                label: Text(
+                                  l10n.translate(
+                                    _showTranslations
+                                        ? 'hide_translations'
+                                        : 'edit_translations',
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              _LocalizedTourFields(
+                                localeCode: _locales[_currentLocaleIndex],
+                                showTitleField: _showTranslations,
+                                showExtendedFields: _showTranslations,
+                                nameController: _nameControllers[
+                                    _locales[_currentLocaleIndex]]!,
+                                descriptionController: _descriptionControllers[
+                                    _locales[_currentLocaleIndex]]!,
+                                includedController: _includedControllers[
+                                    _locales[_currentLocaleIndex]]!,
+                                notIncludedController: _placesControllers[
+                                    _locales[_currentLocaleIndex]]!,
+                                whatToBringController: _whatToBringControllers[
+                                    _locales[_currentLocaleIndex]]!,
+                                extraInfoController: _extraInfoControllers[
+                                    _locales[_currentLocaleIndex]]!,
+                                departureTimeController:
+                                    _departureTimeControllers[
+                                        _locales[_currentLocaleIndex]]!,
+                                returnTimeController:
+                                    _returnTimeTextControllers[
+                                        _locales[_currentLocaleIndex]]!,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          AppButton(
+                            text: l10n.translate('save'),
+                            isLoading: _isSaving,
+                            onPressed: _isSaving || _isUploadingImages
+                                ? null
+                                : () async {
+                                    // ignore: avoid_print
+                                    print("SAVE PRESSED");
+                                    await _saveTour();
+                                  },
+                          ),
+                        ],
                       ),
                     ),
                   ),
-              ],
-            );
-          },
+                  if (_isSaving ||
+                      isLoading ||
+                      _isUploadingImages ||
+                      _isLoadingDepartures)
+                    Positioned.fill(
+                      child: Container(
+                        color: const Color(0x4D000000),
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                    ),
+                ],
+              );
+            },
           ),
         ),
       ),
@@ -894,9 +891,8 @@ class _AddTourScreenState extends State<AddTourScreen>
     }
 
     final names = _collectTextsWithEmpty(_nameControllers);
-    final tourId =
-    widget.tour?.id ??
-      const Uuid().v4();    final departures = _buildDepartures(tourId, parsedPrice);
+    final tourId = widget.tour?.id ?? const Uuid().v4();
+    final departures = _buildDepartures(tourId, parsedPrice);
     final primaryDeparture = departures.first;
     final totalSeats = departures.fold<int>(
       0,
@@ -957,17 +953,21 @@ class _AddTourScreenState extends State<AddTourScreen>
       // ignore: avoid_print
       print("SAVING TO FIRESTORE");
       if (widget.tour == null) {
-        await _tourRepository.addTour(
-          tour,
-          departures: departures,
-        ).timeout(
+        await _tourRepository
+            .addTour(
+              tour,
+              departures: departures,
+            )
+            .timeout(
               const Duration(seconds: 20),
             );
       } else {
-        await _tourRepository.updateTour(
-          tour,
-          departures: departures,
-        ).timeout(
+        await _tourRepository
+            .updateTour(
+              tour,
+              departures: departures,
+            )
+            .timeout(
               const Duration(seconds: 20),
             );
         if (tour.price < widget.tour!.price) {
@@ -1033,8 +1033,7 @@ class _AddTourScreenState extends State<AddTourScreen>
     final parsedPrimaryReturnDate = DateTime.tryParse(
       _returnDateController.text.trim(),
     );
-    final primaryReturnDate =
-        parsedPrimaryReturnDate == null ||
+    final primaryReturnDate = parsedPrimaryReturnDate == null ||
             parsedPrimaryReturnDate.isBefore(primaryDepartureDate)
         ? primaryDepartureDate
         : parsedPrimaryReturnDate;
@@ -1080,13 +1079,11 @@ class _AddTourScreenState extends State<AddTourScreen>
             departureForm.latitudeController,
             departureForm.longitudeController,
           );
-          final departureDate =
-              DateTime.tryParse(
+          final departureDate = DateTime.tryParse(
                 departureForm.departureDateController.text.trim(),
               ) ??
               primaryDepartureDate;
-          final returnDate =
-              DateTime.tryParse(
+          final returnDate = DateTime.tryParse(
                 departureForm.returnDateController.text.trim(),
               ) ??
               departureDate;
@@ -1096,15 +1093,14 @@ class _AddTourScreenState extends State<AddTourScreen>
           );
           final price =
               double.tryParse(departureForm.priceController.text.trim()) ??
-              primaryPrice;
+                  primaryPrice;
 
           return TourDeparture(
             id: departureForm.id,
             tourId: tourId,
             departureDate: departureDate,
-            returnDate: returnDate.isBefore(departureDate)
-                ? departureDate
-                : returnDate,
+            returnDate:
+                returnDate.isBefore(departureDate) ? departureDate : returnDate,
             totalSeats: totalSeats,
             bookedSeats: departureForm.bookedSeats,
             price: price > 0 ? price : primaryPrice,
@@ -1300,7 +1296,8 @@ class _AddTourScreenState extends State<AddTourScreen>
     Map<String, String> values,
   ) {
     for (final entry in controllers.entries) {
-      entry.value.text = values[entry.key] ?? values['kg'] ?? values['ky'] ?? '';
+      entry.value.text =
+          values[entry.key] ?? values['kg'] ?? values['ky'] ?? '';
     }
   }
 

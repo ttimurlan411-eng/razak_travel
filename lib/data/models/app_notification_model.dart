@@ -55,7 +55,9 @@ class AppNotificationModel {
       type: type,
       read: json['read'] == true,
       tourId: (json['tour_id'] ?? json['tourId'])?.toString().trim() ?? '',
-      targetUserId: (json['target_user_id'] ?? json['targetUserId'])?.toString().trim() ?? '',
+      targetUserId:
+          (json['target_user_id'] ?? json['targetUserId'])?.toString().trim() ??
+              '',
       timestamp: parseNullableDateTime(json['timestamp']),
     );
   }

@@ -7,7 +7,7 @@ import 'package:razak_travel/core/services/media_upload_service.dart';
 import 'package:razak_travel/data/models/category_model.dart';
 import 'package:razak_travel/data/repositories/category_repository.dart';
 import 'package:razak_travel/features/admin/widgets/admin_access_guard.dart';
-import 'package:razak_travel/shared/localization/app_localizations.dart';
+import 'package:razak_travel/core/localization/app_localizations.dart';
 import 'package:razak_travel/shared/widgets/app_button.dart';
 import 'package:razak_travel/shared/widgets/app_card.dart';
 import 'package:razak_travel/shared/widgets/app_network_image.dart';
@@ -350,9 +350,8 @@ class _AddCategoryScreenState extends State<AddCategoryScreen>
       return raw.substring('Bad state: '.length).trim();
     }
 
-    final message = error is PostgrestException
-        ? '${error.message} (${error.code})'
-        : raw;
+    final message =
+        error is PostgrestException ? '${error.message} (${error.code})' : raw;
 
     return '$message. ${l10n.text('error_generic')}';
   }

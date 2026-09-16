@@ -1,4 +1,4 @@
-                                                       import 'dart:async';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -8,8 +8,8 @@ import 'package:razak_travel/core/services/supabase_config.dart';
 import 'package:razak_travel/features/auth/auth_controller.dart';
 import 'package:razak_travel/routes/app_routes.dart';
 import 'package:razak_travel/shared/animations/premium_motion.dart';
-import 'package:razak_travel/shared/localization/app_localizations.dart';
-import 'package:razak_travel/shared/localization/locale_controller.dart';
+import 'package:razak_travel/core/localization/app_localizations.dart';
+import 'package:razak_travel/core/localization/locale_controller.dart';
 import 'package:razak_travel/shared/theme/theme_controller.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

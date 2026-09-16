@@ -160,11 +160,16 @@ class TourDeparture {
 
   factory TourDeparture.fromJson(Map<String, dynamic> json) {
     final totalSeats = parseInt(json['total_seats'] ?? json['totalSeats']);
-    final bookedSeats = json.containsKey('booked_seats') || json.containsKey('bookedSeats')
-        ? parseInt(json['booked_seats'] ?? json['bookedSeats'])
-        : math.max(totalSeats - parseInt(json['available_seats'] ?? json['availableSeats']), 0);
+    final bookedSeats =
+        json.containsKey('booked_seats') || json.containsKey('bookedSeats')
+            ? parseInt(json['booked_seats'] ?? json['bookedSeats'])
+            : math.max(
+                totalSeats -
+                    parseInt(json['available_seats'] ?? json['availableSeats']),
+                0);
     final availableSeats = math.max(totalSeats - bookedSeats, 0);
-    final departureDate = parseDateTime(json['departure_date'] ?? json['departureDate']);
+    final departureDate =
+        parseDateTime(json['departure_date'] ?? json['departureDate']);
 
     return TourDeparture(
       id: json['id']?.toString() ?? '',
@@ -180,16 +185,27 @@ class TourDeparture {
         json['status']?.toString(),
         availableSeats: availableSeats,
       ),
-      meetingPointName: parseLocalizedTextMap(json['meeting_point_name'] ?? json['meetingPointName']),
-      meetingAddress: parseLocalizedTextMap(json['meeting_address'] ?? json['meetingAddress']),
+      meetingPointName: parseLocalizedTextMap(
+          json['meeting_point_name'] ?? json['meetingPointName']),
+      meetingAddress: parseLocalizedTextMap(
+          json['meeting_address'] ?? json['meetingAddress']),
       landmark: parseLocalizedTextMap(json['landmark']),
-      pickupType: _normalizePickupType(json['pickup_type']?.toString() ?? json['pickupType']?.toString()),
-      pickupInstructions: parseLocalizedTextMap(json['pickup_instructions'] ?? json['pickupInstructions']),
-      googleMapsUrl: (json['google_maps_url'] ?? json['googleMapsUrl'])?.toString().trim() ?? '',
+      pickupType: _normalizePickupType(
+          json['pickup_type']?.toString() ?? json['pickupType']?.toString()),
+      pickupInstructions: parseLocalizedTextMap(
+          json['pickup_instructions'] ?? json['pickupInstructions']),
+      googleMapsUrl: (json['google_maps_url'] ?? json['googleMapsUrl'])
+              ?.toString()
+              .trim() ??
+          '',
       latitude: parseNullableDouble(json['latitude'] ?? json['lat']),
       longitude: parseNullableDouble(json['longitude'] ?? json['lng']),
-      guidePhone: (json['guide_phone'] ?? json['guidePhone'])?.toString().trim() ?? '',
-      guideWhatsapp: (json['guide_whatsapp'] ?? json['guideWhatsapp'])?.toString().trim() ?? '',
+      guidePhone:
+          (json['guide_phone'] ?? json['guidePhone'])?.toString().trim() ?? '',
+      guideWhatsapp: (json['guide_whatsapp'] ?? json['guideWhatsapp'])
+              ?.toString()
+              .trim() ??
+          '',
     );
   }
 

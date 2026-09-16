@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:razak_travel/data/models/booking_model.dart';
 import 'package:razak_travel/data/repositories/booking_repository.dart';
 import 'package:razak_travel/features/admin/widgets/admin_access_guard.dart';
-import 'package:razak_travel/shared/localization/app_localizations.dart';
+import 'package:razak_travel/core/localization/app_localizations.dart';
 import 'package:razak_travel/shared/widgets/app_card.dart';
 import 'package:razak_travel/shared/widgets/app_empty_state.dart';
 import 'package:razak_travel/shared/widgets/app_loader.dart';
@@ -109,9 +109,8 @@ class _AdminBookingScreenState extends State<AdminBookingScreen> {
             ? '$categoryName → $tourName'
             : (tourName.isNotEmpty ? tourName : categoryName);
         final displayDate = (booking.tourDate ?? booking.departureDate);
-        final priceDisplay = booking.price > 0
-            ? '\$${booking.price.toStringAsFixed(2)}'
-            : '';
+        final priceDisplay =
+            booking.price > 0 ? '\$${booking.price.toStringAsFixed(2)}' : '';
         final statusLabel = _statusLabel(l10n, booking.status);
 
         return AppCard(
@@ -157,15 +156,15 @@ class _AdminBookingScreenState extends State<AdminBookingScreen> {
                                 !_loadingBookingIds.contains(booking.id)
                             ? () async {
                                 final bookingId = booking.id;
-                                setState(() =>
-                                    _loadingBookingIds.add(bookingId));
+                                setState(
+                                    () => _loadingBookingIds.add(bookingId));
                                 try {
                                   final updated = await _repository
                                       .approveBooking(bookingId);
                                   if (!mounted) return;
                                   setState(() {
-                                    final i = _bookings.indexWhere(
-                                        (b) => b.id == bookingId);
+                                    final i = _bookings
+                                        .indexWhere((b) => b.id == bookingId);
                                     if (i != -1) {
                                       _bookings[i] = updated;
                                     }
@@ -204,15 +203,14 @@ class _AdminBookingScreenState extends State<AdminBookingScreen> {
                             ? null
                             : () async {
                                 final bookingId = booking.id;
-                                setState(() =>
-                                    _loadingBookingIds.add(bookingId));
+                                setState(
+                                    () => _loadingBookingIds.add(bookingId));
                                 try {
-                                  await _repository
-                                      .deleteBooking(bookingId);
+                                  await _repository.deleteBooking(bookingId);
                                   if (!mounted) return;
                                   setState(() {
-                                    _bookings.removeWhere(
-                                        (b) => b.id == bookingId);
+                                    _bookings
+                                        .removeWhere((b) => b.id == bookingId);
                                     _loadingBookingIds.remove(bookingId);
                                   });
                                 } catch (_) {

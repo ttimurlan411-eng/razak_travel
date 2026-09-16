@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:razak_travel/features/auth/auth_controller.dart';
 import 'package:razak_travel/routes/app_routes.dart';
+import 'package:razak_travel/core/localization/app_localizations.dart';
 
 class AdminLoginScreen extends StatefulWidget {
   const AdminLoginScreen({super.key});
@@ -12,6 +13,7 @@ class AdminLoginScreen extends StatefulWidget {
 
 class _AdminLoginScreenState extends State<AdminLoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -19,23 +21,57 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
     super.dispose();
   }
 
-  void _login() {
+  Future<void> _login() async {
+    final l10n = AppLocalizations.of(context);
     final password = _passwordController.text.trim();
-    final authController = context.read<AuthController>();
-
-    if (authController.login(password)) {
-      Navigator.of(context).pushReplacementNamed(AppRoutes.categoryManagement);
-    } else {
+    if (password.isEmpty) {
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(
-          const SnackBar(content: Text('Invalid password')),
+          SnackBar(content: Text(l10n.text('fill_all_fields'))),
         );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+    final authController = context.read<AuthController>();
+
+    try {
+      final valid = await authController.login(password);
+      if (!mounted) {
+        return;
+      }
+      if (valid) {
+        Navigator.of(context).pushReplacementNamed(
+          AppRoutes.categoryManagement,
+        );
+      } else {
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(
+            SnackBar(content: Text(l10n.text('invalid_password'))),
+          );
+      }
+    } catch (e) {
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(content: Text(l10n.text('error_generic'))),
+        );
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -47,10 +83,10 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Text(
-                    'Admin Login',
+                  Text(
+                    l10n.text('admin_login'),
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                     ),
@@ -62,16 +98,23 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                     autocorrect: false,
                     enableSuggestions: false,
                     textInputAction: TextInputAction.done,
-                    decoration: const InputDecoration(
-                      labelText: 'Password',
-                      prefixIcon: Icon(Icons.lock_outline),
+                    enabled: !_isLoading,
+                    decoration: InputDecoration(
+                      labelText: l10n.text('password'),
+                      prefixIcon: const Icon(Icons.lock_outline),
                     ),
                     onSubmitted: (_) => _login(),
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: _login,
-                    child: const Text('Login'),
+                    onPressed: _isLoading ? null : _login,
+                    child: _isLoading
+                        ? const SizedBox(
+                            width: 22,
+                            height: 22,
+                            child: CircularProgressIndicator(strokeWidth: 2.5),
+                          )
+                        : Text(l10n.text('login')),
                   ),
                 ],
               ),

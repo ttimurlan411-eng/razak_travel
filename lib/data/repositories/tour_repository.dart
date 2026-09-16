@@ -214,18 +214,15 @@ class TourRepository {
     required Map<String, int> bookingCounts,
     required Map<String, List<TourDeparture>> departuresByTourId,
   }) {
-    final tours = toursData
-        .map((json) => TourModel.fromJson(json))
-        .map((tour) {
-          final departures = departuresByTourId[tour.id];
-          final summarizedTour = departures == null || departures.isEmpty
-              ? tour
-              : _applyDepartureSummary(tour, departures);
-          return summarizedTour.copyWith(
-            bookingCount: bookingCounts[tour.id] ?? 0,
-          );
-        })
-        .toList(growable: false);
+    final tours = toursData.map((json) => TourModel.fromJson(json)).map((tour) {
+      final departures = departuresByTourId[tour.id];
+      final summarizedTour = departures == null || departures.isEmpty
+          ? tour
+          : _applyDepartureSummary(tour, departures);
+      return summarizedTour.copyWith(
+        bookingCount: bookingCounts[tour.id] ?? 0,
+      );
+    }).toList(growable: false);
 
     tours.sort(_compareByPopularity);
     return tours;
@@ -292,10 +289,8 @@ class TourRepository {
     List<TourDeparture> departures,
   ) {
     final sorted = _sortDepartures(departures);
-    final totalSeats =
-        sorted.fold<int>(0, (sum, d) => sum + d.totalSeats);
-    final bookedSeats =
-        sorted.fold<int>(0, (sum, d) => sum + d.bookedSeats);
+    final totalSeats = sorted.fold<int>(0, (sum, d) => sum + d.totalSeats);
+    final bookedSeats = sorted.fold<int>(0, (sum, d) => sum + d.bookedSeats);
     final availableSeats =
         sorted.fold<int>(0, (sum, d) => sum + d.availableSeats);
     return _TourDepartureSummary(

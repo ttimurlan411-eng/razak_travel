@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:razak_travel/features/admin/widgets/admin_access_guard.dart';
-import 'package:razak_travel/shared/localization/app_localizations.dart';
+import 'package:razak_travel/core/localization/app_localizations.dart';
 
 class AdminManagementScreen extends StatelessWidget {
   const AdminManagementScreen({super.key});

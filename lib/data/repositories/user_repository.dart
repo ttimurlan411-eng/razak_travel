@@ -2,8 +2,7 @@ import 'package:razak_travel/core/services/supabase_service.dart';
 import 'package:razak_travel/data/models/user_model.dart';
 
 class UserRepository {
-  UserRepository()
-      : _supabase = SupabaseService.instance;
+  UserRepository() : _supabase = SupabaseService.instance;
 
   final SupabaseService _supabase;
 

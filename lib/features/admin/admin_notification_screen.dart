@@ -6,7 +6,7 @@ import 'package:razak_travel/data/repositories/category_repository.dart';
 import 'package:razak_travel/data/repositories/notification_repository.dart';
 import 'package:razak_travel/data/repositories/tour_repository.dart';
 import 'package:razak_travel/features/admin/widgets/admin_access_guard.dart';
-import 'package:razak_travel/shared/localization/app_localizations.dart';
+import 'package:razak_travel/core/localization/app_localizations.dart';
 import 'package:razak_travel/shared/widgets/app_card.dart';
 import 'package:razak_travel/shared/widgets/app_empty_state.dart';
 import 'package:razak_travel/shared/widgets/app_loader.dart';
@@ -189,9 +189,7 @@ class _AdminNotificationScreenState extends State<AdminNotificationScreen> {
         ),
         body: RefreshIndicator(
           onRefresh: _loadData,
-          child: _isLoading
-              ? const AppLoader()
-              : _buildBody(l10n, localeCode),
+          child: _isLoading ? const AppLoader() : _buildBody(l10n, localeCode),
         ),
       ),
     );
@@ -235,8 +233,7 @@ class _AdminNotificationScreenState extends State<AdminNotificationScreen> {
                         separatorBuilder: (context, index) =>
                             const SizedBox(height: 12),
                         itemBuilder: (context, index) {
-                          final notification =
-                              filteredNotifications[index];
+                          final notification = filteredNotifications[index];
                           return _AdminNotificationTile(
                             notification: notification,
                             onTap: () {
